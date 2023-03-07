@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Luis Fernando\\Personal\\Software\\ApiRestNet6Sol\\ApiRestNet6\\ApiRestNet6.csproj": {}
+    "C:\\Luis Fernando\\Personal\\Software\\.NET 6\\ApiRestNet6Sol\\ApiRestNet6\\ApiRestNet6.csproj": {}
   },
   "projects": {
-    "C:\\Luis Fernando\\Personal\\Software\\ApiRestNet6Sol\\ApiRestNet6\\ApiRestNet6.csproj": {
+    "C:\\Luis Fernando\\Personal\\Software\\.NET 6\\ApiRestNet6Sol\\ApiRestNet6\\ApiRestNet6.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Luis Fernando\\Personal\\Software\\ApiRestNet6Sol\\ApiRestNet6\\ApiRestNet6.csproj",
+        "projectUniqueName": "C:\\Luis Fernando\\Personal\\Software\\.NET 6\\ApiRestNet6Sol\\ApiRestNet6\\ApiRestNet6.csproj",
         "projectName": "ApiRestNet6",
-        "projectPath": "C:\\Luis Fernando\\Personal\\Software\\ApiRestNet6Sol\\ApiRestNet6\\ApiRestNet6.csproj",
+        "projectPath": "C:\\Luis Fernando\\Personal\\Software\\.NET 6\\ApiRestNet6Sol\\ApiRestNet6\\ApiRestNet6.csproj",
         "packagesPath": "C:\\Users\\Luis Fernando\\.nuget\\packages\\",
-        "outputPath": "C:\\Luis Fernando\\Personal\\Software\\ApiRestNet6Sol\\ApiRestNet6\\obj\\",
+        "outputPath": "C:\\Luis Fernando\\Personal\\Software\\.NET 6\\ApiRestNet6Sol\\ApiRestNet6\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Luis Fernando\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -40,6 +40,16 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[7.0.3, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.3, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.2.3, )"
