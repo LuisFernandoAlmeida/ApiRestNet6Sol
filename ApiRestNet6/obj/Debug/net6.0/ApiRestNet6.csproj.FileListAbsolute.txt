@@ -43,6 +43,8 @@ C:\Luis Fernando\Personal\Software\.NET 6\ApiRestNet6Sol\ApiRestNet6\bin\Debug\n
 C:\Luis Fernando\Personal\Software\.NET 6\ApiRestNet6Sol\ApiRestNet6\bin\Debug\net6.0\ApiRestNet6.runtimeconfig.json
 C:\Luis Fernando\Personal\Software\.NET 6\ApiRestNet6Sol\ApiRestNet6\bin\Debug\net6.0\ApiRestNet6.dll
 C:\Luis Fernando\Personal\Software\.NET 6\ApiRestNet6Sol\ApiRestNet6\bin\Debug\net6.0\ApiRestNet6.pdb
+C:\Luis Fernando\Personal\Software\.NET 6\ApiRestNet6Sol\ApiRestNet6\bin\Debug\net6.0\AutoMapper.dll
+C:\Luis Fernando\Personal\Software\.NET 6\ApiRestNet6Sol\ApiRestNet6\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 C:\Luis Fernando\Personal\Software\.NET 6\ApiRestNet6Sol\ApiRestNet6\bin\Debug\net6.0\Azure.Core.dll
 C:\Luis Fernando\Personal\Software\.NET 6\ApiRestNet6Sol\ApiRestNet6\bin\Debug\net6.0\Azure.Identity.dll
 C:\Luis Fernando\Personal\Software\.NET 6\ApiRestNet6Sol\ApiRestNet6\bin\Debug\net6.0\Humanizer.dll

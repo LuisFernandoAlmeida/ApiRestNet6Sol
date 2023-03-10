@@ -1,3 +1,4 @@
+using ApiRestNet6;
 using ApiRestNet6.Datos;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,7 +14,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(option =>
 {
     option.UseSqlServer(builder.Configuration.GetConnectionString("ConexionBDD"));
 });
-
+builder.Services.AddAutoMapper(typeof(MappingConfig));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

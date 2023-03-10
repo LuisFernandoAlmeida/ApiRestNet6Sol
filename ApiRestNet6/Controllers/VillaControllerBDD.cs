@@ -1,8 +1,10 @@
 ﻿using ApiRestNet6.Datos;
 using ApiRestNet6.Modelos;
 using ApiRestNet6.Modelos.Dto;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiRestNet6.Controllers
 {
@@ -12,121 +14,99 @@ namespace ApiRestNet6.Controllers
     {
         private readonly ILogger<VillaControllerBDD> _logger;
         private readonly ApplicationDbContext _db;
+        private readonly IMapper _mapper;
 
-        public VillaControllerBDD(ILogger<VillaControllerBDD> logger,ApplicationDbContext db)
+        public VillaControllerBDD(ILogger<VillaControllerBDD> logger,ApplicationDbContext db, IMapper mapper)
         {
             _logger = logger;
             _db = db;
+            _mapper = mapper;
         }
 
         [HttpGet("GetVillasBDD")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<Villa>> GetVillas()
+        public async Task <ActionResult<IEnumerable<VillaDto>>> GetVillas()
         {
             _logger.LogInformation("Obtener las villas");
-            return Ok(_db.villas.ToList()); 
+            IEnumerable<Villa> villaList = await _db.villas.ToListAsync();
+            return Ok(_mapper.Map<IEnumerable<VillaDto>>(villaList)); 
         }
-
         [HttpGet("GetVillaStore id int", Name = "GetVillaIdBDD")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<VillaDto> GetVillaStore(int id)
+        public async Task<ActionResult<VillaDto>> GetVillaStore(int id)
         {
             if (id == 0)
             {
                 _logger.LogError("Error al traer el id" + id);
                 return BadRequest();
             }
-            var villa = _db.villas.FirstOrDefault(v => v.Id == id);         
+            var villa = await _db.villas.FirstOrDefaultAsync(v => v.Id == id);         
             if (villa == null)
             {
                 return NotFound();
 
             }
-            return Ok(villa);
+            return Ok(_mapper.Map<VillaDto>(villa));
         }
         [HttpPost("CrearVilla")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult<VillaDto> CrearVilla([FromBody] VillaDto villaDto)
+        public async Task<ActionResult<VillaDto>> CrearVilla([FromBody] VillaCreateDto createDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            if (_db.villas.FirstOrDefault(v => v.Nombre.ToLower() == villaDto.Nombre.ToLower())!=null)
+            if (await _db.villas.FirstOrDefaultAsync(v => v.Nombre.ToLower() == createDto.Nombre.ToLower())!=null)
             {
                 ModelState.AddModelError("ErrorNombre", "Ya existe un nombre repetido");
                 return BadRequest(ModelState);
             }
-            if (villaDto.Id == null)
-            {
-                return BadRequest(villaDto.Id);
-            }
-            if (villaDto.Id > 0)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
-            Villa modelo = new()
-            {
-                Nombre = villaDto.Nombre,
-                Detalle = villaDto.Nombre,
-                ImagenUrl = villaDto.ImagenUrl,
-                Ocupantes = villaDto.Ocupantes,
-                MetrosCuadrados = villaDto.MetrosCuadrados,
-                Tarifa = villaDto.Tarifa,
-                Amenidad = villaDto.Amenidad,
-            };
-            _db.villas.Add(modelo);
-            _db.SaveChanges();
-            return CreatedAtRoute("GetVillaId", new { id = villaDto.Id }, villaDto);
+
+            Villa modelo = _mapper.Map<Villa>(createDto); 
+
+             await _db.villas.AddAsync(modelo);
+             await _db.SaveChangesAsync();
+            return CreatedAtRoute("GetVillaIdBDD", new { id = modelo.Id }, modelo);
         }
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult DeleteVilla(int id)
+        public async Task<IActionResult> DeleteVilla(int id)
         {
             if (id == 0)
             {
                 return BadRequest();
             }
-            var villa = _db.villas.FirstOrDefault(v => v.Id == id);
+            var villa = await _db.villas.FirstOrDefaultAsync(v => v.Id == id);
             if (villa == null)
             {
                 return NotFound();
 
             }
             _db.villas.Remove(villa);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
             return NoContent();
         }
         [HttpPut("id int")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult UpdateVilla(int id, VillaDto villaDto)
+        public async Task <IActionResult> UpdateVilla(int id, VillaUpdateDto updateDto)
         {
-            if (villaDto == null || id != villaDto.Id)
+            if (updateDto == null || id != updateDto.Id)
             {
                 return BadRequest();
             }
 
-            Villa modelo = new()
-            {
-                Id=villaDto.Id,
-                Nombre = villaDto.Nombre,
-                Detalle = villaDto.Nombre,
-                ImagenUrl = villaDto.ImagenUrl,
-                Ocupantes = villaDto.Ocupantes,
-                MetrosCuadrados = villaDto.MetrosCuadrados,
-                Tarifa = villaDto.Tarifa,
-                Amenidad = villaDto.Amenidad,
-            };
+            Villa modelo = _mapper.Map<Villa>(updateDto);
+
             _db.Update(modelo);
-            _db.SaveChanges(); 
+            await _db.SaveChangesAsync(); 
             return NoContent();
         }
     }
