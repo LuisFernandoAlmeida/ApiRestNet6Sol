@@ -1,6 +1,8 @@
 using ApiRestNet6;
 using ApiRestNet6.Datos;
+using ApiRestNet6.Repositorio;
 using Microsoft.EntityFrameworkCore;
+using ApiRestNet6.Modelos;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(option =>
     option.UseSqlServer(builder.Configuration.GetConnectionString("ConexionBDD"));
 });
 builder.Services.AddAutoMapper(typeof(MappingConfig));
+builder.Services.AddScoped<IVillaRepositorio, VilaRepositorio>();
+builder.Services.AddScoped<INumeroVillaRepositorio, NumeroVilaRepositorio>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
